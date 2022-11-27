@@ -59,49 +59,34 @@ public class Main {
                         System.out.println("Placar do jogo:\n" +
                                 "Jogador1: " + pontosJogador1 + "\n" +
                                 "Jogador2: " + pontosJogador2);
-                        preparaTabuleiro(tabuleiro);
+                        limpaTabuleiro(tabuleiro);
                         ganhador = false;
                         contador = 0;
                         numeroDePartidas--;
                     }
                 }
 
-                if (pontosJogador1 == pontosJogador2 && contador == 9 && numeroDePartidas == 1) {
+                if (contador == 9 && numeroDePartidas == 0) {
                     contador = 0;
-                    preparaTabuleiro(tabuleiro);
+                    numeroDePartidas++;
+                    limpaTabuleiro(tabuleiro);
+                }
+
+                if (pontosJogador1 == pontosJogador2 && numeroDePartidas == 0) {
+                    contador = 0;
+                    numeroDePartidas++;
+                    limpaTabuleiro(tabuleiro);
                 }
 
                 if (numeroDePartidas != 1 && contador == 9) {
                     System.out.println("A rodada ficou empatada!");
                     contador = 0;
                     numeroDePartidas--;
-                    preparaTabuleiro(tabuleiro);
+                    limpaTabuleiro(tabuleiro);
                 }
-
-
-//                if (pontosJogador1 == pontosJogador2 && numeroDePartidas == 0) {
-//                    System.out.println("O número de partidas acabou em empate, para ter um vencedor, jogue mais uma vez!");
-//                    ganhador = false;
-//                    contador = 1;
-//                    numeroDePartidas++;
-//                }
-//                else if (pontosJogador1 == pontosJogador2 && ganhador == false) {
-//                    System.out.println("Primeira partida deu empate");
-//                    System.out.println("Placar do jogo:\n" +
-//                            "Jogador1: " + pontosJogador1 + "\n" +
-//                            "Jogador2: " + pontosJogador2);
-//                    limpaTabuleiro(tabuleiro);
-//                    exibeTabuleiro(tabuleiro);
-//                    contador = 1;
-//                    numeroDePartidas--;
-//                }
 
                 contador++;
             }
-
-//            System.out.println("Placar do jogo:\n" +
-//                    "Jogador: " + jogador + " " + pontosJogador1 + "\n" +
-//                    "Jogador: " + jogador + " " + pontosJogador2);
 
         } else {
             System.out.println("Número de partidas deve ser maior do que zero. Programa encerrado!");
