@@ -7,6 +7,8 @@ public class Main {
         String tabuleiro[][] = new String[3][3];
         String jogador1 = " X |", jogador2 = " O |", jogador = "";
 
+        System.out.println("Bem vindo ao jogo da velha\nEntre com numeros de 1 a 3\n");
+
         System.out.println("Informe quantas partidas deseja jogar: ");
         short numeroDePartidas = scanner.nextShort();
 
