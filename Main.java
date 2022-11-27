@@ -1,8 +1,10 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         String tabuleiro[][] = new String[3][3];
         String jogador1 = " X ", jogador2 = " O ", jogador = "";
@@ -17,8 +19,8 @@ public class Main {
             int pontosJogador1 = 0, pontosJogador2 = 0;
             limpaTabuleiro(tabuleiro);
             exibeTabuleiro(tabuleiro);
-            short jogadaLinha;
-            short jogadaColuna;
+            int jogadaLinha = 0;
+            int jogadaColuna = 0;
             short contador = 1;
             boolean verifica = true;
             boolean ganhador = false;
@@ -34,20 +36,26 @@ public class Main {
                     verifica = true;
                 }
 
-                System.out.println("Jogador escolha o número da linha: ");
-                jogadaLinha = scanner.nextShort();
-                System.out.println("Jogador escolha o número da coluna: ");
-                jogadaColuna = scanner.nextShort();
-                validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
+                do {
 
-                while (validaPosicao == true) {
+                    try {
+                        System.out.println("Jogador escolha o número da linha: ");
+                        jogadaLinha = scanner.nextInt();
+                        System.out.println("Jogador escolha o número da coluna: ");
+                        jogadaColuna = scanner.nextInt();
 
-                    System.out.println("Jogador escolha o número da linha: ");
-                    jogadaLinha = scanner.nextShort();
-                    System.out.println("Jogador escolha o número da coluna: ");
-                    jogadaColuna = scanner.nextShort();
-                    validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
-                }
+                        validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna, true);
+
+                    } catch (InputMismatchException e) {
+                        System.out.println("Caiu na exceção de caractere");
+                        validaPosicao = false;
+                        jogadaLinha = 0;
+                        jogadaColuna = 0;
+                        continue;
+                    }
+
+                } while (validaPosicao == false);
+
 
                 tabuleiro[jogadaLinha - 1][jogadaColuna - 1] = jogador;
 
@@ -115,21 +123,58 @@ public class Main {
         }
     }
 
-    public static boolean validaJogada(String[][] tabuleiro, short jogadaLinha, short jogadaColuna) {
+    public static void retornaPosicoes() {
+        boolean validaPosicao = true;
+        try {
+            System.out.println("Jogador escolha o número da linha: ");
+            int jogadaLinha = scanner.nextInt();
+            System.out.println("Jogador escolha o número da coluna: ");
+            int jogadaColuna = scanner.nextInt();
+
+//            validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
+
+        } catch (InputMismatchException e) {
+            System.out.println("Caiu na exceção");
+            validaPosicao = false;
+        }
+//        return validaPosicao;
+    }
+
+    public static boolean validaCaractere() {
+        boolean validaPosicao = true;
+        try {
+            System.out.println("Jogador escolha o número da linha: ");
+            int jogadaLinha = scanner.nextInt();
+            System.out.println("Jogador escolha o número da coluna: ");
+            int jogadaColuna = scanner.nextInt();
+//            validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
+
+        } catch (InputMismatchException e) {
+            validaPosicao = false;
+        }
+        return validaPosicao;
+    }
+
+    public static boolean validaJogada(String[][] tabuleiro, int jogadaLinha, int jogadaColuna, boolean validaCaractere) {
         try {
             if (jogadaLinha < 1 || jogadaLinha > 3 || jogadaColuna < 1 || jogadaColuna > 3) {
-                throw new JogoException("ERRO: valor inválido,escolha os valores 1, 2 ou 3\n");
+                throw new JogoException("ERRO: valor inválido, escolha os valores 1, 2 ou 3\n");
             }
 
-            if (tabuleiro[jogadaLinha - 1][jogadaColuna -1].contains("X") || tabuleiro[jogadaLinha - 1][jogadaColuna -1].contains("O")) {
-                throw new JogoException("ERRO: posição ja foi utilizada.\n");
+            if (tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("X") || tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("O")) {
+                throw new JogoException("ERRO: posição já foi utilizada.\n");
             }
+//
+//            if (validaCaractere == false) {
+//                throw new JogoException("ERRO: posição não é um valor inteiro.\n");
+//            }
+
         } catch (JogoException e) {
             System.out.println(e.getMessage());
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static void exibeTabuleiro(String[][] tabuleiro) {
