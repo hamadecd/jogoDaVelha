@@ -12,8 +12,11 @@ public class Main {
 
         System.out.println("Bem vindo ao jogo da velha\nEntre com numeros de 1 a 3 para escolher as posições\n");
 
-        System.out.println("Informe quantas partidas deseja jogar: ");
-        short numeroDePartidas = scanner.nextShort();
+        int numeroDePartidas;
+        do {
+            System.out.println("Informe quantas partidas deseja jogar: ");
+            numeroDePartidas = validaCaractere();
+        } while (numeroDePartidas == -1);
 
         if (numeroDePartidas >= 1) {
 
@@ -56,8 +59,7 @@ public class Main {
                         System.out.println("Placar do jogo:\n" +
                                 "Jogador1: " + pontosJogador1 + "\n" +
                                 "Jogador2: " + pontosJogador2);
-                        limpaTabuleiro(tabuleiro);
-                        exibeTabuleiro(tabuleiro);
+                        preparaTabuleiro(tabuleiro);
                         ganhador = false;
                         contador = 0;
                         numeroDePartidas--;
@@ -66,16 +68,14 @@ public class Main {
 
                 if (pontosJogador1 == pontosJogador2 && contador == 9 && numeroDePartidas == 1) {
                     contador = 0;
-                    limpaTabuleiro(tabuleiro);
-                    exibeTabuleiro(tabuleiro);
+                    preparaTabuleiro(tabuleiro);
                 }
 
                 if (numeroDePartidas != 1 && contador == 9) {
                     System.out.println("A rodada ficou empatada!");
                     contador = 0;
                     numeroDePartidas--;
-                    limpaTabuleiro(tabuleiro);
-                    exibeTabuleiro(tabuleiro);
+                    preparaTabuleiro(tabuleiro);
                 }
 
 
@@ -99,8 +99,28 @@ public class Main {
                 contador++;
             }
 
+//            System.out.println("Placar do jogo:\n" +
+//                    "Jogador: " + jogador + " " + pontosJogador1 + "\n" +
+//                    "Jogador: " + jogador + " " + pontosJogador2);
+
         } else {
             System.out.println("Número de partidas deve ser maior do que zero. Programa encerrado!");
+        }
+    }
+
+    public static void preparaTabuleiro(String tabuleiro[][]) {
+        limpaTabuleiro(tabuleiro);
+        exibeTabuleiro(tabuleiro);
+    }
+
+    public static int validaCaractere() {
+        int numero;
+        try {
+            return numero = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("ERRO: valor inválido, informe um número inteiro positivo");
+            scanner.nextLine(); // para sair da linha de erro do scanner
+            return -1;
         }
     }
 
@@ -116,7 +136,7 @@ public class Main {
                 tabuleiro[jogadaLinha - 1][jogadaColuna - 1] = jogador;
             }
         } catch (InputMismatchException e) {
-            System.out.println("Caiu na exceção de caractere do método validaCaractere");
+            System.out.println("ERRO: valor inválido, informe um número inteiro positivo");
             scanner.nextLine();
         }
         return validaPosicao;
@@ -126,10 +146,12 @@ public class Main {
         try {
 
             if (jogadaLinha < 1 || jogadaLinha > 3 || jogadaColuna < 1 || jogadaColuna > 3) {
+                exibeTabuleiro(tabuleiro);
                 throw new JogoException("ERRO: valor inválido, escolha os valores 1, 2 ou 3\n");
             }
 
             if (tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("X") || tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("O")) {
+                exibeTabuleiro(tabuleiro);
                 throw new JogoException("ERRO: posição já foi utilizada.\n");
             }
 
