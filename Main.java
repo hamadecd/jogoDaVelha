@@ -49,9 +49,9 @@ public class Main {
                     } catch (InputMismatchException e) {
                         System.out.println("Caiu na exceção de caractere");
                         validaPosicao = false;
-                        jogadaLinha = 0;
-                        jogadaColuna = 0;
-                        continue;
+//                        jogadaLinha = 1;
+//                        jogadaColuna = 1;
+//                        continue;
                     }
 
                 } while (validaPosicao == false);
