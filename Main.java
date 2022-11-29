@@ -1,30 +1,32 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-
     static Scanner scanner = new Scanner(System.in);
+    public static int jogadaLinha, jogadaColuna;
+
     public static void main(String[] args) {
         String tabuleiro[][] = new String[3][3];
         String jogador1 = " X ", jogador2 = " O ", jogador = "";
 
         System.out.println("Bem vindo ao jogo da velha\nEntre com numeros de 1 a 3 para escolher as posições\n");
-
-        System.out.println("Informe quantas partidas deseja jogar: ");
-        short numeroDePartidas = scanner.nextShort();
+        int numeroDePartidas;
+        do {
+            System.out.println("Informe quantas partidas deseja jogar: ");
+            numeroDePartidas = validaCaractere();
+        } while (numeroDePartidas == -1);
 
         if (numeroDePartidas >= 1) {
 
             int pontosJogador1 = 0, pontosJogador2 = 0;
-            limpaTabuleiro(tabuleiro);
-            exibeTabuleiro(tabuleiro);
-            short jogadaLinha;
-            short jogadaColuna;
+            preparaTabuleiro(tabuleiro);
+
             short contador = 1;
             boolean verifica = true;
             boolean ganhador = false;
             boolean validaPosicao = true;
 
-            while (contador <= 9 && numeroDePartidas > 0) {
+            while (numeroDePartidas > 0) {
 
                 if (verifica) {
                     jogador = jogador1;
@@ -34,22 +36,9 @@ public class Main {
                     verifica = true;
                 }
 
-                System.out.println("Jogador escolha o número da linha: ");
-                jogadaLinha = scanner.nextShort();
-                System.out.println("Jogador escolha o número da coluna: ");
-                jogadaColuna = scanner.nextShort();
-                validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
-
-                while (validaPosicao == true) {
-
-                    System.out.println("Jogador escolha o número da linha: ");
-                    jogadaLinha = scanner.nextShort();
-                    System.out.println("Jogador escolha o número da coluna: ");
-                    jogadaColuna = scanner.nextShort();
-                    validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
-                }
-
-                tabuleiro[jogadaLinha - 1][jogadaColuna - 1] = jogador;
+                do {
+                    validaPosicao = validaCaractere(tabuleiro, jogador);
+                } while (validaPosicao == false);
 
                 exibeTabuleiro(tabuleiro);
 
@@ -57,55 +46,33 @@ public class Main {
                     ganhador = verificaVencedor(tabuleiro, jogador);
                     if (ganhador && jogador.equals(" X ")) {
                         pontosJogador1++;
-                        System.out.println("Jogador1, você venceu!");
+                        System.out.printf("Jogador%svocê venceu!\n", jogador);
                     } else if (ganhador && jogador.equals(" O ")) {
                         pontosJogador2++;
-                        System.out.println("Jogador2, você venceu!");
+                        System.out.printf("Jogador%svocê venceu!\n", jogador);
                     }
 
                     if (ganhador) {
                         System.out.println("Placar do jogo:\n" +
-                                "Jogador1: " + pontosJogador1 + "\n" +
-                                "Jogador2: " + pontosJogador2);
+                                "Jogador X: " + pontosJogador1 + "\n" +
+                                "Jogador O: " + pontosJogador2);
                         limpaTabuleiro(tabuleiro);
-                        exibeTabuleiro(tabuleiro);
                         ganhador = false;
                         contador = 0;
                         numeroDePartidas--;
                     }
                 }
 
-                if (pontosJogador1 == pontosJogador2 && contador == 9 && numeroDePartidas == 1) {
-                    contador = 0;
-                    limpaTabuleiro(tabuleiro);
-                    exibeTabuleiro(tabuleiro);
-                }
-
                 if (numeroDePartidas != 1 && contador == 9) {
-                    System.out.println("A rodada ficou empatada!");
+                    System.out.println("A partida ficou empatada.");
                     contador = 0;
                     numeroDePartidas--;
                     limpaTabuleiro(tabuleiro);
-                    exibeTabuleiro(tabuleiro);
+                } else if (numeroDePartidas == 1 && contador == 9) {
+                    System.out.println("Jogo empatado, jogue mais uma para desempatar.");
+                    contador = 0;
+                    limpaTabuleiro(tabuleiro);
                 }
-
-
-//                if (pontosJogador1 == pontosJogador2 && numeroDePartidas == 0) {
-//                    System.out.println("O número de partidas acabou em empate, para ter um vencedor, jogue mais uma vez!");
-//                    ganhador = false;
-//                    contador = 1;
-//                    numeroDePartidas++;
-//                }
-//                else if (pontosJogador1 == pontosJogador2 && ganhador == false) {
-//                    System.out.println("Primeira partida deu empate");
-//                    System.out.println("Placar do jogo:\n" +
-//                            "Jogador1: " + pontosJogador1 + "\n" +
-//                            "Jogador2: " + pontosJogador2);
-//                    limpaTabuleiro(tabuleiro);
-//                    exibeTabuleiro(tabuleiro);
-//                    contador = 1;
-//                    numeroDePartidas--;
-//                }
 
                 contador++;
             }
@@ -115,21 +82,58 @@ public class Main {
         }
     }
 
-    public static boolean validaJogada(String[][] tabuleiro, short jogadaLinha, short jogadaColuna) {
+    public static void preparaTabuleiro(String tabuleiro[][]) {
+        limpaTabuleiro(tabuleiro);
+        exibeTabuleiro(tabuleiro);
+    }
+
+    public static int validaCaractere() {
+        int numero;
         try {
-            if (jogadaLinha < 1 || jogadaLinha > 3 || jogadaColuna < 1 || jogadaColuna > 3) {
-                throw new JogoException("ERRO: valor inválido,escolha os valores 1, 2 ou 3\n");
-            }
-
-            if (tabuleiro[jogadaLinha - 1][jogadaColuna -1].contains("X") || tabuleiro[jogadaLinha - 1][jogadaColuna -1].contains("O")) {
-                throw new JogoException("ERRO: posição ja foi utilizada.\n");
-            }
-        } catch (JogoException e) {
-            System.out.println(e.getMessage());
-            return true;
+            return numero = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.err.println("ERRO: valor inválido, informe um número inteiro positivo");
+            scanner.nextLine();
+            return -1;
         }
+    }
 
-        return false;
+    public static boolean validaCaractere(String[][] tabuleiro, String jogador) {
+        boolean validaPosicao = false;
+        try {
+            System.out.println("Jogador escolha o número da linha: ");
+            jogadaLinha = scanner.nextInt();
+            System.out.println("Jogador escolha o número da coluna: ");
+            jogadaColuna = scanner.nextInt();
+            validaPosicao = validaJogada(tabuleiro, jogadaLinha, jogadaColuna);
+            if (validaPosicao) {
+                tabuleiro[jogadaLinha - 1][jogadaColuna - 1] = jogador;
+            }
+        } catch (InputMismatchException e) {
+            System.err.println("ERRO: valor inválido, informe um número inteiro positivo");
+            scanner.nextLine();
+        }
+        return validaPosicao;
+    }
+
+    public static boolean validaJogada(String[][] tabuleiro, int jogadaLinha, int jogadaColuna) {
+        try {
+
+            if (jogadaLinha < 1 || jogadaLinha > 3 || jogadaColuna < 1 || jogadaColuna > 3) {
+                exibeTabuleiro(tabuleiro);
+                throw new JogoException("ERRO: valor inválido, escolha os valores 1, 2 ou 3\n");
+            }
+
+            if (tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("X") || tabuleiro[jogadaLinha - 1][jogadaColuna - 1].contains("O")) {
+                exibeTabuleiro(tabuleiro);
+                throw new JogoException("ERRO: posição já foi utilizada.\n");
+            }
+
+        } catch (JogoException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public static void exibeTabuleiro(String[][] tabuleiro) {
