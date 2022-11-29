@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ade8e8f4-9cec-4b16-9a66-67d6c25689ea" name="Changes" comment="correcao da classe main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JogoDaVelhaGP06.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JogoDaVelhaWandemberg.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/jogoDaVelha/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jogoDaVelha/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +31,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/JogoDaVelhaGP06.java" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/JogoDaVelhaWandemberg.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/JogoException.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Main.java" root0="SKIP_INSPECTION" />
   </component>
@@ -151,16 +150,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="correcao da classe main" />
     <option name="LAST_COMMIT_MESSAGE" value="correcao da classe main" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/JogoDaVelhaWandemberg.java</url>
-          <line>18</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

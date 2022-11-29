@@ -2,7 +2,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-
     static Scanner scanner = new Scanner(System.in);
     public static int jogadaLinha, jogadaColuna;
 
@@ -11,7 +10,6 @@ public class Main {
         String jogador1 = " X ", jogador2 = " O ", jogador = "";
 
         System.out.println("Bem vindo ao jogo da velha\nEntre com numeros de 1 a 3 para escolher as posições\n");
-
         int numeroDePartidas;
         do {
             System.out.println("Informe quantas partidas deseja jogar: ");
@@ -21,15 +19,14 @@ public class Main {
         if (numeroDePartidas >= 1) {
 
             int pontosJogador1 = 0, pontosJogador2 = 0;
-            limpaTabuleiro(tabuleiro);
-            exibeTabuleiro(tabuleiro);
+            preparaTabuleiro(tabuleiro);
 
             short contador = 1;
             boolean verifica = true;
             boolean ganhador = false;
             boolean validaPosicao = true;
 
-            while (contador <= 9 && numeroDePartidas > 0) {
+            while (numeroDePartidas > 0) {
 
                 if (verifica) {
                     jogador = jogador1;
@@ -49,16 +46,16 @@ public class Main {
                     ganhador = verificaVencedor(tabuleiro, jogador);
                     if (ganhador && jogador.equals(" X ")) {
                         pontosJogador1++;
-                        System.out.println("Jogador1, você venceu!");
+                        System.out.printf("Jogador%svocê venceu!\n", jogador);
                     } else if (ganhador && jogador.equals(" O ")) {
                         pontosJogador2++;
-                        System.out.println("Jogador2, você venceu!");
+                        System.out.printf("Jogador%svocê venceu!\n", jogador);
                     }
 
                     if (ganhador) {
                         System.out.println("Placar do jogo:\n" +
-                                "Jogador1: " + pontosJogador1 + "\n" +
-                                "Jogador2: " + pontosJogador2);
+                                "Jogador X: " + pontosJogador1 + "\n" +
+                                "Jogador O: " + pontosJogador2);
                         limpaTabuleiro(tabuleiro);
                         ganhador = false;
                         contador = 0;
@@ -66,22 +63,14 @@ public class Main {
                     }
                 }
 
-                if (contador == 9 && numeroDePartidas == 0) {
-                    contador = 0;
-                    numeroDePartidas++;
-                    limpaTabuleiro(tabuleiro);
-                }
-
-                if (pontosJogador1 == pontosJogador2 && numeroDePartidas == 0) {
-                    contador = 0;
-                    numeroDePartidas++;
-                    limpaTabuleiro(tabuleiro);
-                }
-
                 if (numeroDePartidas != 1 && contador == 9) {
-                    System.out.println("A rodada ficou empatada!");
+                    System.out.println("A partida ficou empatada.");
                     contador = 0;
                     numeroDePartidas--;
+                    limpaTabuleiro(tabuleiro);
+                } else if (numeroDePartidas == 1 && contador == 9) {
+                    System.out.println("Jogo empatado, jogue mais uma para desempatar.");
+                    contador = 0;
                     limpaTabuleiro(tabuleiro);
                 }
 
@@ -103,8 +92,8 @@ public class Main {
         try {
             return numero = scanner.nextInt();
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: valor inválido, informe um número inteiro positivo");
-            scanner.nextLine(); // para sair da linha de erro do scanner
+            System.err.println("ERRO: valor inválido, informe um número inteiro positivo");
+            scanner.nextLine();
             return -1;
         }
     }
@@ -121,7 +110,7 @@ public class Main {
                 tabuleiro[jogadaLinha - 1][jogadaColuna - 1] = jogador;
             }
         } catch (InputMismatchException e) {
-            System.out.println("ERRO: valor inválido, informe um número inteiro positivo");
+            System.err.println("ERRO: valor inválido, informe um número inteiro positivo");
             scanner.nextLine();
         }
         return validaPosicao;
@@ -141,7 +130,7 @@ public class Main {
             }
 
         } catch (JogoException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
         return true;
